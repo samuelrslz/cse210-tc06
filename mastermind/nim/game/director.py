@@ -12,10 +12,10 @@ class Director:
         Controller
 
     Attributes:
-        board (Hunter): An instance of the class of objects known as Board.
+        board (Board): An instance of the class of objects known as Board.
         console (Console): An instance of the class of objects known as Console.
         keep_playing (boolean): Whether or not the game can continue.
-        move (Rabbit): An instance of the class of objects known as Move.
+        move (Move): An instance of the class of objects known as Move.
         roster (Roster): An instance of the class of objects known as Roster.
     """
 
@@ -57,7 +57,7 @@ class Director:
     
     def _get_inputs(self):
         """Gets the inputs at the beginning of each round of play. In this case,
-        that means getting the move from the current player.
+        that means getting the guess from the current player.
 
         Args:
             self (Director): An instance of Director.
@@ -68,7 +68,7 @@ class Director:
         # get next player's move
         player = self._roster.get_current()
         self._console.write(f"{player.get_name()}'s turn:")
-        guess = self._console.read("What pile to remove from? ")
+        guess = self._console.read("What is your guess? ")
         move = Move(guess)
         player.set_move(move)
 
@@ -85,7 +85,7 @@ class Director:
  
     def _do_outputs(self):
         """Outputs the important game information for each round of play. In 
-        this case, that means checking if there are stones left and declaring the winner.
+        this case, that means checking if the guess correct and declaring the winner.
 
         Args:
             self (Director): An instance of Director.
