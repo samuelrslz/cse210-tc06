@@ -53,6 +53,7 @@ class Director:
             name = self._console.read(f"Enter a name for player {n + 1}: ")
             player = Player(name)
             self._roster.add_player(player)
+            self._board._prepare(self._roster.players[n])
     
     def _get_inputs(self):
         """Gets the inputs at the beginning of each round of play. In this case,
@@ -67,9 +68,8 @@ class Director:
         # get next player's move
         player = self._roster.get_current()
         self._console.write(f"{player.get_name()}'s turn:")
-        pile = self._console.read_number("What pile to remove from? ")
-        stones = self._console.read_number("How many stones to remove? ")
-        move = Move(stones, pile)
+        guess = self._console.read("What pile to remove from? ")
+        move = Move(guess)
         player.set_move(move)
 
     def _do_updates(self):
@@ -81,7 +81,7 @@ class Director:
         """
         player = self._roster.get_current()
         move = player.get_move()
-        self._board.apply(move)
+        self._board.apply(move, player.get_name())
  
     def _do_outputs(self):
         """Outputs the important game information for each round of play. In 
@@ -90,7 +90,9 @@ class Director:
         Args:
             self (Director): An instance of Director.
         """
-        if self._board.is_empty():
+        player = self._roster.get_current()
+        
+        if self._board.is_empty(player.get_name()):
             winner = self._roster.get_current()
             name = winner.get_name()
             print(f"\n{name} won!")
