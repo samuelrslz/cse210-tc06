@@ -1,13 +1,13 @@
 import random
 
 class Board:
-    """A designated playing surface. The responsibility of Board is to keep track of the pieces in play.
+    """A designated playing surface. The responsibility of Board is to keep track of the player's codes.
     
     Stereotype: 
         Information Holder
 
     Attributes:
-        _piles (list): The number of piles of stones.
+        _items (dictionary): The code, guess, and hint.
     """
     def __init__(self):
         """The class constructor.
@@ -17,15 +17,16 @@ class Board:
         """
         self._items = {}
 
-    def apply(self, move, name):
-        """Applies the given move to the playing surface. In this case, that 
-        means removing a number of stones from a pile.
+    def apply(self, guess, name):
+        """Applies the given move to the playing surface. In this case, comparing the guess
+        with the code.
         
         Args:
             self (Board): an instance of Board.
-            move (Move): The move to apply.
+            guess (Move): The move to apply.
+            name (player): The name of the player.
         """
-        guess = move.get_guess()
+        guess = guess.get_guess()
         print(self._items[name][0])
         self._items[name][1] = guess
         self._items[name][2] = ""
@@ -40,13 +41,13 @@ class Board:
 
     
     def is_empty(self, name):
-        """Determines if all the stones have been removed from the board.
+        """Determines if guess is correct.
         
         Args:
             self (Board): an instance of Board.
 
         Returns:
-            boolean: True if the board has no stones on it; false if otherwise.
+            boolean: True if guess is correct.
         """
         guess = self._items[name][1]
         code = self._items[name][0]
@@ -67,9 +68,6 @@ class Board:
         text += "\n--------------------"
         return text
 
-    def set_items(self, name, guess):
-        self._items[name][1] = guess
-
     def _prepare(self, player):
         """Sets up the board with an entry for each player.
         
@@ -77,11 +75,7 @@ class Board:
             self (Board): an instance of Board.
         """
         name = player.get_name()
-        code = str(random.randint(1000, 10000))
-        guess = "----"
-        hint = "****"
+        code = str(random.randint(10000, 100000))
+        guess = "-----"
+        hint = "*****"
         self._items[name] = [code, guess, hint]
-
-# board = Board()
-
-# print(board._piles)
